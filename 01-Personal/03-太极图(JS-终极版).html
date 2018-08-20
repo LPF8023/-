@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes"/>
+    <title>Title</title>
+    <style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    
+</style>
+</head>
+<body>
+
+<!--<div class="wrap">
+    <div class="left"></div>
+    <div class="right"></div>
+    <div class="top">
+        <span></span>
+    </div>
+    <div class="bottom">
+        <span></span>
+    </div>
+</div>-->
+
+<script type="text/javascript">
+	var d=document;
+	//创建wrap盒子
+	var wrap=d.createElement("div");
+	wrap.className="wrap";
+	d.body.appendChild(wrap);
+	//创建left
+	var left=d.createElement("div");
+	left.className="left";
+	wrap.appendChild(left);
+	//创建right
+	var right=d.createElement("div");
+	right.className="right";
+	wrap.appendChild(right);
+	//创建top,它是关键字，不能直接用
+	var tops=d.createElement("div");
+	tops.className="top";
+	wrap.appendChild(tops);
+	//创建bottom
+	var bottom=d.createElement("div");
+	bottom.className="bottom";
+	wrap.appendChild(bottom);
+	//创建span
+	var span1=d.createElement("span");
+	tops.appendChild(span1);
+	var span2=d.createElement("span");
+	bottom.appendChild(span2);
+
+    /*设置body背景颜色*/
+    document.body.style.background="lightslategrey";
+    /*设置.wrap的属性*/
+   	var wrapWidth=wrap.style.width="200px";
+    var wrapHeight=wrap.style.height=parseInt(wrapWidth)+"px";
+
+   /*当太极图旋转时的最大高度(对角线距离)大于窗口高度时，窗口转动时会有上下微小幅度的跳动
+   * 解决方案：1.给body取消滑动条 overflow:hidden
+   *           2.把窗口缩小比例。窗口比例越大越跳动。
+   * */
+    wrap.style.margin="100px "+"auto";
+    wrap.style.position="relative";
+    /*document.body.style.overflow = "hidden";*/
+
+    /*动画效果*/
+    var angle=0;
+    setInterval(function () {
+        angle+=4;
+        if(angle>=360){
+            angle=0;
+        }
+        wrap.style.transform="rotate("+ angle +"deg)";
+    },16);
+
+    /*left,right的公共样式*/
+    var lRWidth=parseInt(wrapWidth)/2+"px";
+    var lRHeight=parseInt(wrapHeight)+"px";
+    right.style.float=left.style.float="left";
+    right.style.width=left.style.width=lRWidth;
+    right.style.height=left.style.height=lRHeight;
+    /*设置left盒子样式*/
+    left.style.background="#000";
+    left.style.borderRadius=lRWidth +" 0 0 "+lRWidth;
+    /*设置right盒子样式*/
+    right.style.background="#fff";
+    right.style.borderRadius="0"+" "+lRWidth+" "+lRWidth+" "+"0";
+
+    /*top,bottom公共样式*/
+    var tBWidth=lRWidth;
+    var tBHeight=parseInt(lRHeight)/2+"px";
+    var lefts=(parseInt(wrapWidth)-parseInt(tBWidth))/2+"px";
+    bottom.style.width=tops.style.width=tBWidth;
+    bottom.style.height=tops.style.height=tBHeight;
+    bottom.style.borderRadius=tops.style.borderRadius="50%";
+    bottom.style.position=tops.style.position="absolute";
+    bottom.style.bottom=tops.style.top="0";
+    bottom.style.left=tops.style.left=lefts;
+    bottom.style.textAlign=tops.style.textAlign="center";
+    bottom.style.lineHeight=tops.style.lineHeight=tBHeight;
+    /*设置top盒子样式*/
+    tops.style.background="#000";
+    /*设置bottom盒子样式*/
+    bottom.style.background="#fff";
+
+    /*span的公共样式*/
+    var potWidth=parseInt(wrapWidth)/10+"px";
+    var potHeight=parseInt(wrapHeight)/10+"px";
+    span1.style.display=span2.style.display="inline-block";
+    span1.style.verticalAlign=span2.style.verticalAlign="middle";
+    span1.style.width=span2.style.width=potWidth;
+    span1.style.height=span2.style.height=potHeight;
+    span1.style.borderRadius=span2.style.borderRadius="50%";
+    /*上面span的样式*/
+    span1.style.background="#fff";
+    /*下面span的样式*/
+    span2.style.background="#000";
+
+</script>
+</body>
+</html>

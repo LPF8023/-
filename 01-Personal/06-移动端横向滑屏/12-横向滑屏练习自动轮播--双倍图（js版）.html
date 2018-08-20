@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
+		<title></title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			html,body{
+				height: 100%;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+	</body>
+	<script type="text/javascript">
+		
+			var d=document;
+/*创建元素区域*/	
+			/*定义需要轮播图片的个数。变量n要先写，以免影响后面的使用*/
+			var n=5;
+			
+			/*创建section包裹块*/
+			var section=d.createElement("section");
+			section.style.position="relative";
+			d.body.appendChild(section);
+			
+			/*创建ul列表*/
+			var ulNodes=d.createElement("ul");
+			ulNodes.style.listStyle="none";
+			ulNodes.style.position="absolute";
+			ulNodes.style.top="0px";
+			ulNodes.style.left="0px";
+			ulNodes.style.width=n*2+"00%";
+			
+			/*创建li列表及a标签、img标签,用for循环*/
+			var liNodes,aNodes,imgNodes;
+			for (var i = 1; i <= n; i++) {
+				liNodes=d.createElement("li");
+				liNodes.style.float="left";
+				liNodes.style.width=100/(2*n)+"%";
+				
+				aNodes=d.createElement("a");
+				aNodes.href="javascript:;";
+				aNodes.style.textDecoration="none";
+				aNodes.style.display="inline-block";
+				aNodes.style.verticalAlign="middle";
+				
+				imgNodes=d.createElement("img");
+				imgNodes.src="img/"+ i +".jpg";
+				imgNodes.style.display="block";
+				imgNodes.style.width="100%";
+				
+				aNodes.appendChild(imgNodes);
+				liNodes.appendChild(aNodes);
+				ulNodes.appendChild(liNodes);
+			}
+			section.appendChild(ulNodes);
+			
+			/*创建小圆点span标签及包裹快*/
+			var icons=d.createElement("div");
+			for (var i = 0; i < n; i++) {
+				var spanNode=d.createElement("span");
+				spanNode.style.display="inline-block";
+				spanNode.style.verticalAlign="middle";
+				spanNode.style.width=spanNode.style.height="10px";
+				spanNode.style.background="gray";
+				spanNode.style.borderRadius="50%";
+				spanNode.style.marginLeft="6px";
+				
+				icons.appendChild(spanNode);
+			}
+			icons.style.position="absolute";
+			icons.style.left="0px";
+			icons.style.bottom="10px";
+			icons.style.width="100%";
+			icons.style.height="10px";
+			icons.style.lineHeight="10px";
+			icons.style.textAlign="center";
+				
+			section.appendChild(icons);
+			ulNodes.innerHTML+=ulNodes.innerHTML;
+			
+			/*获取关键节点*/
+			var lis=document.querySelectorAll("section ul li");
+			var spans=document.querySelectorAll("span");
+			var imgs=document.querySelectorAll("img");
+			
+			/*让所有的图片加载完成后，执行以下代码，否则拿不到属性值，只有标签名*/
+			imgs[n-1].onload=function(){
+				/*给section设置高度(与图片等高)*/
+				section.style.height=imgs[0].offsetHeight+"px";
+			};
+			
+			/*给第一个span标签添加默认样式*/
+			spans[0].style.background="deeppink";
+			
+/*事件行为区域*/
+			/*取消默认行为*/
+			d.addEventListener("touchstart",function(event){
+				event.preventDefault();
+			});
+			/*横向滑屏时*/			
+			/*定义ul元素初始位置*/
+			var eleX=0;
+			/*定义手指的初始位置*/
+			var startX=0;
+			/*定义手指距离差*/
+			var disX=0;
+			/*定义屏幕宽度*/
+			var screenW=document.documentElement.clientWidth;
+			/*定义图片索引,必须定义为全局变量*/
+			var index=0;
+			
+			/*手指开始触屏时*/
+			section.addEventListener("touchstart",function(event){
+				/*清除定时器*/
+				clearInterval(timer);
+				
+				/*清除之前的时间过渡*/
+				ulNodes.style.transition="0s";//用none也可
+				
+				/*图片滑动时，无缝处理*/
+				if(index==0){
+					index=n;
+				}else if(index==2*n-1){
+					index=n-1;
+				};
+				/*图片跳转位置*/
+				ulNodes.style.left=-index*screenW+"px";
+				
+				var touch=event.changedTouches[0];
+				/*ul元素的位置*/
+				eleX=ulNodes.offsetLeft;
+				/*手指初始位置*/
+				startX=touch.clientX;
+				
+			});
+			/*手指移动时*/
+			section.addEventListener("touchmove",function(event){
+				var touch=event.changedTouches[0];
+				/*手指结束位置*/
+				var endX=touch.clientX;
+				/*手指距离差*/
+				disX=endX-startX;
+				
+				/*元素的位置*/
+				ulNodes.style.left=disX+eleX+"px";	
+			});
+				
+			/*手指结束时*/
+			section.addEventListener("touchend",function(){
+				/*用自身左距离/屏幕宽。然后四舍五入，即当滑动距离大于等于一半屏宽时，才自动调到下一张，否则还回到当前图片*/
+				index=Math.round(-ulNodes.offsetLeft/screenW);
+				/*图片索引范围限定*/
+				if(index<0){
+					index=0;
+				}else if(index>n*2-1){
+					index=n*2-1;
+				}
+				
+				/*图片位置*/
+				ulNodes.style.left=-index*screenW+"px";
+				
+				/*增加时间过渡*/
+				ulNodes.style.transition="0.5s";
+				
+				/*红色小圆点位置*/
+				for(var i=0;i<n;i++){
+					spans[i].style.background="gray";
+				};
+				spans[index%n].style.background="deeppink"
+				/*开启定时器*/
+				auto();
+			});
+			
+			/*自动轮播*/
+			var timer;
+			auto();
+			function auto(){
+				timer=setInterval(function(){
+					
+					/*图片轮播时无缝处理*/
+					if(index==2*n-1){
+						index=n-1;
+						/*清除之前的时间过渡*/
+						ulNodes.style.transition="0s";
+						ulNodes.style.left=-index*screenW+"px";
+					};
+					
+					setTimeout(function(){
+						index++;
+						/*轮播时图片的过渡时间*/
+						ulNodes.style.transition="1.2s";
+						/*图片位置*/
+						ulNodes.style.left=-index*screenW+"px";	
+						/*红色小圆点位置*/
+						for(var i=0;i<n;i++){
+						spans[i].style.background="gray";
+						};
+						spans[index%n].style.background="deeppink"
+					},30);
+						
+				},1400);
+			};
+			
+	</script>
+	
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        #wrap{
+            width:300px;
+            height:300px;
+            margin:200px auto;
+            position: relative;
+            transform-style: preserve-3d;
+            transform-origin: 50% center -150px;
+            transform: rotateX(0deg) rotateY(0deg);
+            /*background: #4cae4c;*/
+            transition: 1s;
+        }
+        /*外面的大盒子*/
+        #box1{
+            width:300px;
+            height:300px;
+            position: absolute;
+        }
+        .box1{
+            width:300px;
+            height:300px;
+            position: absolute;
+            top:0px;
+            left:0px;
+            background-size: 100% 100%;
+
+            /*background: #3c3c3c;*/
+
+            transition: transform 1.5s;
+        }
+
+        .outBox1{
+            background-image: url("04.3d变换/img/1.jpg");
+            opacity: 0.4;
+        }
+        .outBox2{
+            background-image: url("04.3d变换/img/2.jpg");
+            top:-300px;
+            transform-origin: bottom;
+            transform: rotateX(90deg);
+            opacity: 0.4;
+        }
+        .outBox3{
+            background-image: url("04.3d变换/img/3.jpg");
+            left:300px;
+            transform-origin: left;
+            transform: rotateY(90deg);
+            opacity: 0.4;
+        }
+
+        .outBox4{
+            background-image: url("04.3d变换/img/4.jpg");
+            top:300px;
+            transform-origin: top;
+            transform: rotateX(-90deg);
+            opacity: 0.4;
+        }
+
+        .outBox5{
+            background-image: url("04.3d变换/img/5.jpg");
+            left:-300px;
+            transform-origin: right;
+            transform: rotateY(-90deg);
+            opacity: 0.4;
+        }
+
+        .outBox6{
+            background-image: url("04.3d变换/img/6.jpg");
+            transform: translateZ(-300px) rotateY(180deg);
+            opacity: 0.4;
+        }
+
+        /*里面的小盒子*/
+        #box2 {
+            width: 150px;
+            height: 150px;
+            position: relative;
+            transform-style: preserve-3d;
+            /*transform-origin: 50% center -150px;*/
+            transform: translateX(75px) translateY(75px) translateZ(-75px);
+        }
+        .box2{
+            width:150px;
+            height:150px;
+            position: absolute;
+            top:0px;
+            left:0px;
+            background-size: 100% 100%;
+
+            /*background: #3c3c3c;*/
+
+            transition: transform 1.5s;
+        }
+        .inBox1{
+            background-image: url("04.3d变换/img/7.jpg");
+            opacity: 0.4;
+        }
+        .inBox2{
+            background-image: url("04.3d变换/img/8.jpg");
+            top:-150px;
+            transform-origin: bottom;
+            transform: rotateX(90deg);
+            opacity: 0.4;
+        }
+        .inBox3{
+            background-image: url("04.3d变换/img/9.jpg");
+            left:150px;
+            transform-origin: left;
+            transform: rotateY(90deg);
+            opacity: 0.4;
+        }
+        .inBox4{
+            background-image: url("04.3d变换/img/10.jpg");
+            top:150px;
+            transform-origin: top;
+            transform: rotateX(-90deg);
+            opacity: 0.4;
+        }
+        .inBox5{
+            background-image: url("04.3d变换/img/11.jpg");
+            left:-150px;
+            transform-origin: right;
+            transform: rotateY(-90deg);
+            opacity: 0.4;
+        }
+        .inBox6{
+            background-image: url("04.3d变换/img/12.jpg");
+            transform: translateZ(-150px) rotateY(180deg);
+            opacity: 0.4;
+        }
+
+        /*炸裂效果*/
+        /*大盒子和小盒子的第一个面*/
+        #wrap:hover .outBox1,#wrap:hover .inBox1{
+            transform: translateZ(100px);
+        }
+        /*大盒子和小盒子的第二个面*/
+        #wrap:hover .outBox2,#wrap:hover .inBox2{
+            transform: rotateX(90deg) translateZ(100px);
+        }
+        /*大盒子和小盒子的第三个面*/
+        #wrap:hover .outBox3,#wrap:hover .inBox3{
+            transform: rotateY(90deg) translateZ(100px);
+        }
+        /*大盒子和小盒子的第四个面*/
+        #wrap:hover .outBox4,#wrap:hover .inBox4{
+            transform: rotateX(-90deg) translateZ(100px);
+        }
+        /*大盒子和小盒子的第五个面*/
+        #wrap:hover .outBox5,#wrap:hover .inBox5{
+            transform: rotateY(-90deg) translateZ(100px);
+        }
+        /*大盒子的第六个面*/
+        #wrap:hover .outBox6{
+            transform: translateZ(-400px) rotateY(180deg);
+        }
+        #wrap:hover .inBox6{
+            transform: translateZ(-250px) rotateY(180deg);
+        }
+
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <!--外面的大盒子-->
+        <div id="box1">
+            <div class="box1 outBox1"></div>
+            <div class="box1 outBox2"></div>
+            <div class="box1 outBox3"></div>
+            <div class="box1 outBox4"></div>
+            <div class="box1 outBox5"></div>
+            <div class="box1 outBox6"></div>
+        </div>
+        <!--里面的小盒子-->
+        <div id="box2">
+            <div class="box2 inBox1"></div>
+            <div class="box2 inBox2"></div>
+            <div class="box2 inBox3"></div>
+            <div class="box2 inBox4"></div>
+            <div class="box2 inBox5"></div>
+            <div class="box2 inBox6"></div>
+        </div>
+    </div>
+
+    <script>
+        window.onload =function () {
+
+            /*盒子自动旋转*/
+            var wrap=document.getElementById("wrap");
+            var deg=0;
+            setInterval(function () {
+                deg++;
+                wrap.style.transform="rotateX("+deg+"deg) rotateY("+deg+"deg)"
+            },25);
+
+        }
+    </script>
+</body>
+</html>

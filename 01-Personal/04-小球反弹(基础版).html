@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+		<style type="text/css">
+			html,body{
+				overflow: hidden;
+			}
+		</style>
+	</head>
+
+	<body>
+	</body>
+	<script>
+		// 创建一个div小圆球，并设置简单样式。
+		var div0 = document.createElement("div");
+		div0.style.width = div0.style.height = "50px";
+		div0.style.backgroundColor = "lightgreen";
+		div0.style.borderRadius="50%";
+		div0.style.position = "absolute";
+		div0.style.left = "0px";
+		div0.style.top = "0px";
+		document.body.appendChild(div0);
+		
+		//定义位移方向   + 右    - 左
+		var abx = 1;
+		var aby = 1;
+		//设置水平移动速度
+		var speedx = 10;
+		//设置垂直移动速度
+		var speedy = 7;
+
+		setInterval(divMove, 10);
+
+		function divMove() {
+			//小圆球的范围限定   
+			if(div0.offsetLeft >= document.documentElement.clientWidth-div0.offsetWidth) {
+				abx = -1;
+				ballColor(div0);
+			} else if(div0.offsetLeft < 0) {
+				abx = 1;
+				ballColor(div0);
+			}
+			if(div0.offsetTop >= document.documentElement.clientHeight-div0.offsetHeight) {
+				aby = -1;
+				ballColor(div0);
+			} else if(div0.offsetTop < 0) {
+				aby = 1;
+				ballColor(div0);
+			}
+			
+			//小圆球的实时位置。
+			div0.style.left = div0.offsetLeft + speedx * abx + "px";
+			div0.style.top = div0.offsetTop + speedy * aby + "px";
+			
+			/*设置圆点走过的痕迹*/
+			/*var dot = document.createElement("div");
+			dot.style.width=dot.style.height=div0.style.width;
+			dot.style.background = "grey";
+			dot.style.borderRadius = "50%";
+			dot.style.position = "absolute";
+			dot.style.left = div0.offsetLeft + "px";
+			dot.style.top = div0.offsetTop + "px";
+			document.body.appendChild(dot);*/
+
+		}
+		
+		//设置小球随机颜色   rgba(r,g,b,a)
+			function ballColor(obj){
+				var r=Math.floor(Math.random()*256);
+				var g=Math.floor(Math.random()*256);
+				var b=Math.floor(Math.random()*256);
+				var a=1;
+				obj.style.backgroundColor="rgba("+r+","+g+","+b+","+a+")";
+			}
+	</script>
+
+</html>

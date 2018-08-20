@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            text-align: center;
+            position: relative;
+        }
+       /* #myCanvas{
+            background: deeppink;
+        }*/
+
+
+    </style>
+</head>
+<body>
+    <canvas id="myCanvas" width="400" height="400"></canvas>
+</body>
+
+<script type="text/javascript">
+    window.onload=function(){
+        var c=document.getElementById("myCanvas");
+        var ctx=c.getContext("2d");
+        // 目标图像
+        ctx.beginPath();
+        ctx.fillStyle="grey";
+        ctx.fillRect(0,0,c.width,c.height);
+
+        //创建p标签
+        var p=document.createElement("p");
+        p.innerHTML="谢谢惠顾";
+        p.style.fontSize="30px";
+        p.style.color="red";
+        p.style.fontWeight="bold";
+        p.style.zIndex="-1";
+        document.body.appendChild(p);
+        //文本随窗口大小变化居中
+        window.onresize=function () {
+            p.style.position="absolute";
+            p.style.top=(c.height-parseInt(p.style.fontSize))/2+"px";
+            p.style.left=c.offsetLeft+(c.width-120)/2+"px";
+        };
+        // 兼容初始化时文本不居中的BUG
+        p.style.position="absolute";
+        p.style.top=(c.height-parseInt(p.style.fontSize))/2+"px";
+        p.style.left=c.offsetLeft+(c.width-120)/2+"px";
+
+
+        ctx.globalCompositeOperation="destination-out";
+
+        // 源图像设置
+        c.onmousedown=function () {
+            document.onmousemove=function (event) {
+                var x=event.clientX-c.offsetLeft;
+                var y=event.clientY-c.offsetTop;
+                ctx.beginPath();
+                ctx.fillStyle="red";
+                ctx.arc(x,y,25,0,2*Math.PI);
+                ctx.fill();
+            };
+            document.onmouseup=function () {
+                document.onmousemove=document.onmouseup=null;
+            };
+            return false;
+        };
+
+    };
+
+</script>
+</html>

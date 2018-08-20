@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			html,body{
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+	</body>
+	<script>
+		window.onload = function() {
+			var body = document.body;
+			//设置小球尺寸
+			var size = 50;
+			//定义宽度与高度的临界值
+			var width = document.documentElement.clientWidth - size;
+			var height = document.documentElement.clientHeight - size;
+			//实时获取浏览器可视区域宽度与高度的临界值
+			window.onresize = function() {
+				width = document.documentElement.clientWidth - size;
+				height = document.documentElement.clientHeight - size;
+			};
+			//创建小球的个数
+			createBall(body, 10);
+
+			//创建小球函数
+			function createBall(obj, num) {
+				for(var i = 0; i < num; i++) {
+					var cBall = document.createElement("div");
+					cBall.className = "ball";
+					cBall.style.width = cBall.style.height = size + "px";
+					cBall.style.borderRadius = "50%";
+					//给当前小球添加随机色
+					ballColor(cBall);
+					cBall.style.position = "absolute";
+					//给当前小球设定随机初始位置
+//					cBall.style.left = Math.random() * width + "px";
+//					cBall.style.top = Math.random() * height + "px";
+					//动态添加属性，设置当前小球的移动方向   +1  向右/向下
+					cBall.abx = 1;
+					cBall.aby = 1;
+					//给当前小球随机设置水平移动速度   用向上取整:避免随机数取到0，小球不运动
+//					cBall.speedx=Math.ceil(Math.random() * 10);
+					//给当前小球随机设置垂直移动速度
+//					cBall.speedy=Math.ceil(Math.random() * 10);
+					
+					
+					cBall.style.left =10+i + "px";
+					cBall.style.top = 10+i + "px";
+					
+					cBall.speedx=2+i;
+					cBall.speedy=2+i;
+					
+					obj.appendChild(cBall);
+				};
+			};
+			
+			//拿到所有的小球
+			var ballNum = document.getElementsByClassName("ball");
+
+			setInterval(divMove, 10);
+			
+			//小球移动函数
+			function divMove() {
+
+				for(var i = 0; i < ballNum.length; i++) {
+					//小圆球的范围限定   
+					if(ballNum[i].offsetLeft >= width) {
+						ballNum[i].abx = -1;
+						ballColor(ballNum[i]);
+
+					} else if(ballNum[i].offsetLeft <= 0) {
+						ballNum[i].abx = 1;
+						ballColor(ballNum[i]);
+
+					}
+					if(ballNum[i].offsetTop >= height) {
+						ballNum[i].aby = -1;
+						ballColor(ballNum[i]);
+
+					} else if(ballNum[i].offsetTop <= 0) {
+						ballNum[i].aby = 1;
+						ballColor(ballNum[i]);
+
+					}
+					//每个小圆球的实时位置。								         +1 右/下  -1左/上
+					ballNum[i].style.left = ballNum[i].offsetLeft + ballNum[i].speedx * ballNum[i].abx + "px";
+					ballNum[i].style.top = ballNum[i].offsetTop + ballNum[i].speedy * ballNum[i].aby + "px";
+				};
+			}
+
+			//设置小球随机颜色   rgba(r,g,b,a)
+			function ballColor(obj) {
+				var r = Math.floor(Math.random() * 256);
+				var g = Math.floor(Math.random() * 256);
+				var b = Math.floor(Math.random() * 256);
+				var a = 1;
+				obj.style.backgroundColor = "rgba(" + r + "," + g + "," + b + "," + a + ")";
+			}
+		};
+	</script>
+</html>
